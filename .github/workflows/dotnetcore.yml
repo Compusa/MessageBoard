@@ -1,4 +1,4 @@
-name: Build status
+name: .NET Core CI
 
 on: [push]
 
