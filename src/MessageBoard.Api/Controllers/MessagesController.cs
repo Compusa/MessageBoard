@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using MediatR;
 using MessageBoard.Application;
 using MessageBoard.Application.Messages.Queries;
+using MessageBoard.Domain.AggregateModels.MessageAggregate;
+using MessageBoard.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace MessageBoard.Api.Controllers
 {
@@ -18,9 +16,16 @@ namespace MessageBoard.Api.Controllers
     {
         private readonly IMediator _mediator;
 
-        public MessagesController(IMediator mediator)
+        public MessagesController(IMediator mediator, MessageBoardContext messageBoardContext)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            
+            // TODO: Dummy data, to be removed...
+            messageBoardContext.Messages.Add(new Message { Id = 3 });
+            messageBoardContext.Messages.Add(new Message { Id = 4 });
+            messageBoardContext.Messages.Add(new Message { Id = 2 });
+            messageBoardContext.Messages.Add(new Message { Id = 1 });
+            messageBoardContext.SaveChanges();
         }
 
         /// <summary>
