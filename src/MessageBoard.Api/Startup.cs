@@ -1,7 +1,9 @@
 using MediatR;
 using MessageBoard.Application;
 using MessageBoard.Domain;
+using MessageBoard.Domain.AggregateModels.MessageAggregate;
 using MessageBoard.Infrastructure;
+using MessageBoard.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +35,9 @@ namespace MessageBoard.Api
                     options.UseInMemoryDatabase("MessageBoard");
                 });
 
-            services.AddScoped<IReadOnlyMessageBoardContext, ReadOnlyMessageBoardContext>();
+            services
+                .AddScoped<IReadOnlyMessageBoardContext, ReadOnlyMessageBoardContext>()
+                .AddScoped<IMessageRepository, MessageRepository>();
 
             services.AddControllers();
 
@@ -48,6 +52,8 @@ namespace MessageBoard.Api
                     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                     options.IncludeXmlComments(xmlPath);
+
+                    options.CustomSchemaIds((type) => type.Name.Replace("Dto", string.Empty).Replace("Command", string.Empty));
                 });
         }
 
