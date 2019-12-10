@@ -14,17 +14,18 @@ namespace UnitTests.Application
         {
             // Arrange
             const int messageId = 1;
-            var query = new GetMessageQuery(messageId);
 
-            var context = new Mock<IReadOnlyMessageBoardContext>();
-            var handler = new GetMessageQueryHandler(context.Object);
+            var contextMock = new Mock<IReadOnlyMessageBoardContext>();
+
+            var query = new GetMessageQuery(messageId);
+            var handler = new GetMessageQueryHandler(contextMock.Object);
 
             // Act
             var messageDto = await handler.Handle(query, default);
 
             // Assert
             Assert.Null(messageDto);
-            context.Verify(x => x.FindAsync<Message>(messageId), Times.Once);
+            contextMock.Verify(x => x.FindAsync<Message>(messageId), Times.Once);
         }
 
         [Fact]
@@ -32,16 +33,17 @@ namespace UnitTests.Application
         {
             // Arrange
             const int messageId = 1;
-            var query = new GetMessageQuery(messageId);
 
             var message = new Message
             {
                 Id = messageId
             };
 
-            var context = new Mock<IReadOnlyMessageBoardContext>();
-            context.Setup(x => x.FindAsync<Message>(It.IsAny<int>())).ReturnsAsync(message);
-            var handler = new GetMessageQueryHandler(context.Object);
+            var contextMock = new Mock<IReadOnlyMessageBoardContext>();
+            contextMock.Setup(x => x.FindAsync<Message>(It.IsAny<int>())).ReturnsAsync(message);
+
+            var query = new GetMessageQuery(messageId);
+            var handler = new GetMessageQueryHandler(contextMock.Object);
 
             // Act
             var messageDto = await handler.Handle(query, default);
@@ -49,7 +51,7 @@ namespace UnitTests.Application
             // Assert
             Assert.NotNull(messageDto);
             Assert.Equal(messageId, messageDto.Id);
-            context.Verify(x => x.FindAsync<Message>(messageId), Times.Once);
+            contextMock.Verify(x => x.FindAsync<Message>(messageId), Times.Once);
         }
     }
 }

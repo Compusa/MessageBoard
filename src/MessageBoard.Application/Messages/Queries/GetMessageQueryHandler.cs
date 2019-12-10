@@ -17,7 +17,6 @@ namespace MessageBoard.Application.Messages.Queries
 
         public async Task<MessageDto> Handle(GetMessageQuery request, CancellationToken cancellationToken)
         {
-            // TODO: require id to be greater than 0?
             var message = await _messageBoardContext.FindAsync<Message>(request.Id);
 
             if (message == null)
@@ -25,10 +24,7 @@ namespace MessageBoard.Application.Messages.Queries
                 return null;
             }
 
-            return new MessageDto
-            {
-                Id = message.Id
-            };
+            return MessageDto.Create(message);
         }
     }
 }
