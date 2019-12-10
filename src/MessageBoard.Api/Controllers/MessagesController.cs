@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using MessageBoard.Application;
@@ -21,10 +22,10 @@ namespace MessageBoard.Api.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             
             // TODO: Dummy data, to be removed...
-            messageBoardContext.Messages.Add(new Message { Id = 3 });
-            messageBoardContext.Messages.Add(new Message { Id = 4 });
-            messageBoardContext.Messages.Add(new Message { Id = 2 });
-            messageBoardContext.Messages.Add(new Message { Id = 1 });
+            messageBoardContext.Messages.Add(new Message { Id = 3, ClientId = 1 });
+            messageBoardContext.Messages.Add(new Message { Id = 4, ClientId = 2 });
+            messageBoardContext.Messages.Add(new Message { Id = 2, ClientId = 2 });
+            messageBoardContext.Messages.Add(new Message { Id = 1, ClientId = 3 });
             messageBoardContext.SaveChanges();
         }
 
@@ -46,6 +47,18 @@ namespace MessageBoard.Api.Controllers
             }
 
             return Ok(message);
+        }
+
+        /// <summary>
+        /// List all messages.
+        /// </summary>
+        /// <response code="200">All messages, or empty if no messages exist</response>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<MessageDto>>> Get()
+        {
+            var messages = await _mediator.Send(new ListMessagesQuery());
+
+            return Ok(messages);
         }
     }
 }
