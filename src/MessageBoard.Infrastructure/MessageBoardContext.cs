@@ -1,9 +1,12 @@
-﻿using MessageBoard.Domain.AggregateModels.MessageAggregate;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MessageBoard.Domain.AggregateModels.MessageAggregate;
+using MessageBoard.Domain.SeedWork;
 using Microsoft.EntityFrameworkCore;
 
 namespace MessageBoard.Infrastructure
 {
-    public class MessageBoardContext : DbContext
+    public class MessageBoardContext : DbContext, IUnitOfWork
     {
         public MessageBoardContext(DbContextOptions<MessageBoardContext> options)
             : base(options)
@@ -11,5 +14,12 @@ namespace MessageBoard.Infrastructure
         }
 
         public DbSet<Message> Messages { get; set; }
+
+        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
+        {
+            await base.SaveChangesAsync(cancellationToken);
+
+            return true;
+        }
     }
 }

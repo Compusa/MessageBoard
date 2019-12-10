@@ -1,9 +1,17 @@
-﻿namespace MessageBoard.Domain.AggregateModels.MessageAggregate
-{
-    public class Message
-    {
-        public int Id { get; set; }
+﻿using MessageBoard.Domain.SeedWork;
 
-        public int ClientId { get; set; }
+namespace MessageBoard.Domain.AggregateModels.MessageAggregate
+{
+    public class Message : Entity, IAggregateRoot
+    {
+        public Message(string content, int clientId)
+        {
+            Content = content;
+            ClientId = clientId;
+        }
+
+        public int ClientId { get; private set; }
+
+        public string Content { get; private set; }
     }
 }
