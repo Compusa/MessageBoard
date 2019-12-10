@@ -24,7 +24,7 @@ namespace MessageBoard.Application.Messages.Queries
                 return null;
             }
 
-            return MessageDto.Create(message);
+            return MessageDto.Map(message);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace MessageBoard.Application.Messages.Commands
 
             await _messageRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
-            return MessageDto.Create(message);
+            return MessageDto.Map(message);
         }
     }
 }
