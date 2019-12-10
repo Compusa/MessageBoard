@@ -22,7 +22,7 @@ namespace MessageBoard.Application.Messages.Queries
             return await _messageBoardContext
                 .Messages
                 .Select(x => MessageDto.Create(x))
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
     }
 }
