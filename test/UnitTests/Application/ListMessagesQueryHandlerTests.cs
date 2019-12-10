@@ -38,7 +38,7 @@ namespace UnitTests.Application
             // Arrange
             var messages = new List<Message>
             {
-                new Message()
+                new Message(string.Empty, 1)
             };
 
             var contextMock = new Mock<IReadOnlyMessageBoardContext>();
@@ -61,9 +61,9 @@ namespace UnitTests.Application
             // Arrange
             var messages = new List<Message>
             {
-                new Message(),
-                new Message(),
-                new Message()
+                new Message(string.Empty, 1),
+                new Message(string.Empty, 2),
+                new Message(string.Empty, 3)
             };
 
             var contextMock = new Mock<IReadOnlyMessageBoardContext>();

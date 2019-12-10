@@ -34,13 +34,11 @@ namespace UnitTests.Application
             // Arrange
             const int messageId = 1;
 
-            var message = new Message
-            {
-                Id = messageId
-            };
+            var mockedMessage = new Mock<Message>();
+            mockedMessage.Setup(x => x.Id).Returns(messageId);
 
             var contextMock = new Mock<IReadOnlyMessageBoardContext>();
-            contextMock.Setup(x => x.FindAsync<Message>(It.IsAny<int>())).ReturnsAsync(message);
+            contextMock.Setup(x => x.FindAsync<Message>(It.IsAny<int>())).ReturnsAsync(mockedMessage.Object);
 
             var query = new GetMessageQuery(messageId);
             var handler = new GetMessageQueryHandler(contextMock.Object);
