@@ -8,12 +8,15 @@ namespace MessageBoard.Application
 
         public int ClientId { get; set; }
 
+        public string Message { get; set; }
+
         public static MessageDto Create(Message message)
         {
             return new MessageDto
             {
                 Id = message.Id,
-                ClientId = message.ClientId
+                ClientId = message.ClientId,
+                Message = message.Content
             };
         }
     }
