@@ -12,24 +12,30 @@ namespace UnitTests.Application
 {
     public class ListMessagesQueryHandlerTests
     {
+        private readonly Mock<IReadOnlyMessageBoardContext> _mockedReadOnlyContext;
+
+        public ListMessagesQueryHandlerTests()
+        {
+            _mockedReadOnlyContext = new Mock<IReadOnlyMessageBoardContext>();
+        }
+
         [Fact]
         public async Task Should_return_empty_array_when_no_messages_exist()
         {
             // Arrange
             var messages = new List<Message>();
 
-            var contextMock = new Mock<IReadOnlyMessageBoardContext>();
-            contextMock.Setup(x => x.Messages).Returns(messages.AsQueryable().BuildMock().Object);
+            _mockedReadOnlyContext.Setup(x => x.Messages).Returns(messages.AsQueryable().BuildMock().Object);
 
             var query = new ListMessagesQuery();
-            var handler = new ListMessagesQueryHandler(contextMock.Object);
+            var handler = new ListMessagesQueryHandler(_mockedReadOnlyContext.Object);
 
             // Act
             var messagesDto = await handler.Handle(query, default);
 
             // Assert
             Assert.Empty(messagesDto);
-            contextMock.Verify(x => x.Messages, Times.Once);
+            _mockedReadOnlyContext.Verify(x => x.Messages, Times.Once);
         }
 
         [Fact]
@@ -38,21 +44,20 @@ namespace UnitTests.Application
             // Arrange
             var messages = new List<Message>
             {
-                new Message(string.Empty, 1)
+                new Message("The message", 1)
             };
 
-            var contextMock = new Mock<IReadOnlyMessageBoardContext>();
-            contextMock.Setup(x => x.Messages).Returns(messages.AsQueryable().BuildMock().Object);
+            _mockedReadOnlyContext.Setup(x => x.Messages).Returns(messages.AsQueryable().BuildMock().Object);
 
             var query = new ListMessagesQuery();
-            var handler = new ListMessagesQueryHandler(contextMock.Object);
+            var handler = new ListMessagesQueryHandler(_mockedReadOnlyContext.Object);
 
             // Act
             var messagesDto = await handler.Handle(query, default);
 
             // Assert
             Assert.NotEmpty(messagesDto);
-            contextMock.Verify(x => x.Messages, Times.Once);
+            _mockedReadOnlyContext.Verify(x => x.Messages, Times.Once);
         }
 
         [Fact]
@@ -61,16 +66,15 @@ namespace UnitTests.Application
             // Arrange
             var messages = new List<Message>
             {
-                new Message(string.Empty, 1),
-                new Message(string.Empty, 2),
-                new Message(string.Empty, 3)
+                new Message("First message", 1),
+                new Message("Second message", 2),
+                new Message("Third message", 3)
             };
 
-            var contextMock = new Mock<IReadOnlyMessageBoardContext>();
-            contextMock.Setup(x => x.Messages).Returns(messages.AsQueryable().BuildMock().Object);
+            _mockedReadOnlyContext.Setup(x => x.Messages).Returns(messages.AsQueryable().BuildMock().Object);
 
             var query = new ListMessagesQuery();
-            var handler = new ListMessagesQueryHandler(contextMock.Object);
+            var handler = new ListMessagesQueryHandler(_mockedReadOnlyContext.Object);
 
             // Act
             var messagesDto = await handler.Handle(query, default);
@@ -78,7 +82,8 @@ namespace UnitTests.Application
             // Assert
             Assert.NotEmpty(messagesDto);
             Assert.Equal(messages.Count, messagesDto.Count());
-            contextMock.Verify(x => x.Messages, Times.Once);
+
+            _mockedReadOnlyContext.Verify(x => x.Messages, Times.Once);
         }
     }
 }

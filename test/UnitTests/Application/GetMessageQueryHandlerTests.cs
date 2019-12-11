@@ -3,51 +3,62 @@ using MessageBoard.Domain;
 using MessageBoard.Domain.AggregateModels.MessageAggregate;
 using Moq;
 using System.Threading.Tasks;
+using UnitTests.Mocks;
 using Xunit;
 
 namespace UnitTests.Application
 {
     public class GetMessageQueryHandlerTests
     {
+        private readonly Mock<IReadOnlyMessageBoardContext> _mockedReadOnlyContext;
+
+        public GetMessageQueryHandlerTests()
+        {
+            _mockedReadOnlyContext = new Mock<IReadOnlyMessageBoardContext>();
+        }
+
         [Fact]
         public async Task Should_return_null_when_specified_id_doest_not_exist()
         {
             // Arrange
-            const int messageId = 1;
+            _mockedReadOnlyContext
+                .Setup(x => x.FindAsync<Message>(It.IsAny<int>()))
+                .ReturnsAsync(() => null);
 
-            var contextMock = new Mock<IReadOnlyMessageBoardContext>();
-
-            var query = new GetMessageQuery(messageId);
-            var handler = new GetMessageQueryHandler(contextMock.Object);
+            var query = new GetMessageQuery(1);
+            var handler = new GetMessageQueryHandler(_mockedReadOnlyContext.Object);
 
             // Act
             var messageDto = await handler.Handle(query, default);
 
             // Assert
             Assert.Null(messageDto);
-            contextMock.Verify(x => x.FindAsync<Message>(messageId), Times.Once);
+            _mockedReadOnlyContext.Verify(x => x.FindAsync<Message>(query.Id), Times.Once);
         }
 
         [Fact]
         public async Task Should_return_message_when_specified_id_exists()
         {
             // Arrange
-            const int messageId = 1;
+            var message = MockedMessageBuilder
+                .SetId(1)
+                .SetContent("The message")
+                .SetClientId(2)
+                .Build().Object;
 
-            var contextMock = new Mock<IReadOnlyMessageBoardContext>();
-            contextMock
-                .Setup(x => x.FindAsync<Message>(messageId))
-                .ReturnsAsync(() => new Message(string.Empty, 0));
+            _mockedReadOnlyContext
+                .Setup(x => x.FindAsync<Message>(It.IsAny<int>()))
+                .ReturnsAsync(() => message);
 
-            var query = new GetMessageQuery(messageId);
-            var handler = new GetMessageQueryHandler(contextMock.Object);
+            var query = new GetMessageQuery(message.Id);
+            var handler = new GetMessageQueryHandler(_mockedReadOnlyContext.Object);
 
             // Act
             var messageDto = await handler.Handle(query, default);
 
             // Assert
             Assert.NotNull(messageDto);
-            contextMock.Verify(x => x.FindAsync<Message>(messageId), Times.Once);
+            _mockedReadOnlyContext.Verify(x => x.FindAsync<Message>(message.Id), Times.Once);
         }
     }
 }

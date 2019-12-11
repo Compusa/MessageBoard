@@ -29,6 +29,7 @@ namespace MessageBoard.Application.Messages.Commands
             }
 
             message.UpdateContent(request.Message);
+            _messageRepository.Update(message);
 
             await _messageRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 

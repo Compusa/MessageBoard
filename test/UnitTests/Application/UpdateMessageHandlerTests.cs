@@ -4,7 +4,7 @@ using MessageBoard.Domain.SeedWork;
 using Moq;
 using System.Threading;
 using System.Threading.Tasks;
-using UnitTests.Application.Mocks;
+using UnitTests.Mocks;
 using Xunit;
 
 namespace UnitTests.Application
@@ -34,8 +34,7 @@ namespace UnitTests.Application
 
             // Assert
             Assert.Null(updatedMessage);
-
-            _mockedRepository.VerifyAll();
+            _mockedRepository.Verify(x => x.GetAsync(command.MessageId), Times.Once);
         }
 
         [Fact]
@@ -43,9 +42,9 @@ namespace UnitTests.Application
         {
             // Arrange
             var message = MockedMessageBuilder
-                .WithMessageId(1)
-                .WithContent("The message")
-                .WithClientId(1)
+                .SetId(1)
+                .SetContent("The message")
+                .SetClientId(1)
                 .Build()
                 .Object;
 
@@ -59,8 +58,7 @@ namespace UnitTests.Application
 
             // Assert
             Assert.Null(updatedMessage);
-
-            _mockedRepository.VerifyAll();
+            _mockedRepository.Verify(x => x.GetAsync(command.MessageId), Times.Once);
         }
 
         [Fact]
@@ -68,9 +66,9 @@ namespace UnitTests.Application
         {
             // Arrange
             var message = MockedMessageBuilder
-                .WithMessageId(1)
-                .WithContent("The message")
-                .WithClientId(1)
+                .SetId(1)
+                .SetContent("The message")
+                .SetClientId(1)
                 .Build()
                 .Object;
 
@@ -89,8 +87,9 @@ namespace UnitTests.Application
             Assert.Equal(command.MessageId, updatedMessage.Id);
             Assert.Equal(command.Message, updatedMessage.Message);
 
-            _mockedRepository.VerifyAll();
-            _mockedUnitOfWork.VerifyAll();
+            _mockedRepository.Verify(x => x.GetAsync(command.MessageId), Times.Once);
+            _mockedRepository.Verify(x => x.Update(message), Times.Once);
+            _mockedUnitOfWork.Verify(x => x.SaveChangesAsync(default), Times.Once);
         }
     }
 }
