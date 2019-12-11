@@ -27,6 +27,11 @@ namespace MessageBoard.Infrastructure.Repositories
             _context.Entry(message).State = EntityState.Modified;
         }
 
+        public void Remove(Message message)
+        {
+            _context.Entry(message).State = EntityState.Deleted;
+        }
+
         public async Task<Message> GetAsync(int messageId)
         {
             return await _context.Messages.FindAsync(messageId);

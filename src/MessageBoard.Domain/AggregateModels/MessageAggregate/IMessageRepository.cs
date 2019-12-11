@@ -9,6 +9,8 @@ namespace MessageBoard.Domain.AggregateModels.MessageAggregate
 
         void Update(Message message);
 
+        void Remove(Message message);
+
         Task<Message> GetAsync(int messageId);
     }
 }

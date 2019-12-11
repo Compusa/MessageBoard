@@ -58,9 +58,45 @@ namespace MessageBoard.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<MessageDto>> Post([FromBody] string message)
         {
-            var createdMessage = await _mediator.Send(new CreateMessageCommand(message, new Random().Next()));
+            var createdMessage = await _mediator.Send(new CreateMessageCommand(message, 1));
 
             return CreatedAtAction(nameof(Get), new { id = createdMessage.Id }, createdMessage);
+        }
+
+        /// <summary>
+        /// Updates a message.
+        /// </summary>
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Put(int id, [FromBody] string message)
+        {
+            var messageUpdated = await _mediator.Send(new UpdateMessageCommand(id, message, 1));
+
+            if (messageUpdated)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Deletes a message.
+        /// </summary>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var messageDeleted = await _mediator.Send(new DeleteMessageCommand(id, 1));
+
+            if (!messageDeleted)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
         }
     }
 }
