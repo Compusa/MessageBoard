@@ -3,3 +3,6 @@
 ![](https://github.com/Compusa/MessageBoard/workflows/ASP.NET%20Core%20CI/badge.svg)
 
 RESTful API to serve as the backend for a public message board.
+
+
+dotnet dev-certs https --trust
