@@ -5,7 +5,7 @@ using MessageBoard.Domain.AggregateModels.MessageAggregate;
 
 namespace MessageBoard.Application.Messages.Commands
 {
-    public class UpdateMessageCommandHandler : IRequestHandler<UpdateMessageCommand, bool>
+    public class UpdateMessageCommandHandler : IRequestHandler<UpdateMessageCommand, MessageDto>
     {
         private readonly IMessageRepository _messageRepository;
 
@@ -14,25 +14,25 @@ namespace MessageBoard.Application.Messages.Commands
             _messageRepository = messageRepository;
         }
 
-        public async Task<bool> Handle(UpdateMessageCommand request, CancellationToken cancellationToken)
+        public async Task<MessageDto> Handle(UpdateMessageCommand request, CancellationToken cancellationToken)
         {
             var message = await _messageRepository.GetAsync(request.MessageId);
 
             if (message == null)
             {
-                return false; // NOT FOUND
+                return null; // NOT FOUND
             }
 
             if (message.ClientId != request.ClientId)
             {
-                return false;
+                return null;
             }
 
             message.UpdateContent(request.Message);
 
-            var result = await _messageRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+            await _messageRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-            return result > 0;
+            return MessageDto.Map(message);
         }
     }
 }

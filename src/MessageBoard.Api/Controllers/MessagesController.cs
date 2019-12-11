@@ -71,9 +71,9 @@ namespace MessageBoard.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Put(int id, [FromBody] string message)
         {
-            var messageUpdated = await _mediator.Send(new UpdateMessageCommand(id, message, 1));
+            var updatedMessage = await _mediator.Send(new UpdateMessageCommand(id, message, 1));
 
-            if (messageUpdated)
+            if (updatedMessage == null)
             {
                 return BadRequest();
             }

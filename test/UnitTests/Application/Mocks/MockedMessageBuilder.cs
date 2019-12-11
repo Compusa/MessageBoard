@@ -16,19 +16,19 @@ namespace UnitTests.Application.Mocks
             _messageId = messageId;
         }
 
-        public static MockedMessageBuilder SetMessageId(int id)
+        public static MockedMessageBuilder WithMessageId(int id)
         {
             return new MockedMessageBuilder(id);
         }
 
-        public MockedMessageBuilder SetContent(string content)
+        public MockedMessageBuilder WithContent(string content)
         {
             _content = content;
 
             return this;
         }
 
-        public MockedMessageBuilder SetClientId(int clientId)
+        public MockedMessageBuilder WithClientId(int clientId)
         {
             _clientId = clientId;
 

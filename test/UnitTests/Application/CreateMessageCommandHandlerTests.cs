@@ -4,6 +4,7 @@ using MessageBoard.Domain.SeedWork;
 using Moq;
 using System.Threading;
 using System.Threading.Tasks;
+using UnitTests.Application.Mocks;
 using Xunit;
 
 namespace UnitTests.Application
