@@ -25,6 +25,7 @@ namespace MessageBoard.Application.Messages.Commands
 
             if (message.ClientId != request.ClientId)
             {
+                return false;
             }
 
             _messageRepository.Remove(message);

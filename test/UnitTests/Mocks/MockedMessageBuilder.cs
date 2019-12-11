@@ -1,7 +1,7 @@
 ﻿using MessageBoard.Domain.AggregateModels.MessageAggregate;
 using Moq;
 
-namespace UnitTests.Application.Mocks
+namespace UnitTests.Mocks
 {
     public sealed class MockedMessageBuilder
     {
@@ -16,19 +16,19 @@ namespace UnitTests.Application.Mocks
             _messageId = messageId;
         }
 
-        public static MockedMessageBuilder WithMessageId(int id)
+        public static MockedMessageBuilder SetId(int id)
         {
             return new MockedMessageBuilder(id);
         }
 
-        public MockedMessageBuilder WithContent(string content)
+        public MockedMessageBuilder SetContent(string content)
         {
             _content = content;
 
             return this;
         }
 
-        public MockedMessageBuilder WithClientId(int clientId)
+        public MockedMessageBuilder SetClientId(int clientId)
         {
             _clientId = clientId;
 
