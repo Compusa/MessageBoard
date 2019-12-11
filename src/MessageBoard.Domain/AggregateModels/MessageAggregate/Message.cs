@@ -10,8 +10,8 @@ namespace MessageBoard.Domain.AggregateModels.MessageAggregate
             ClientId = clientId;
         }
 
-        public int ClientId { get; private set; }
+        public int ClientId { get; }
 
-        public string Content { get; private set; }
+        public string Content { get; set; }
     }
 }

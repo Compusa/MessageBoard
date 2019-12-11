@@ -14,12 +14,5 @@ namespace MessageBoard.Infrastructure
         }
 
         public DbSet<Message> Messages { get; set; }
-
-        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
-        {
-            await base.SaveChangesAsync(cancellationToken);
-
-            return true;
-        }
     }
 }

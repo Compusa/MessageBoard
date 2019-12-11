@@ -20,7 +20,7 @@ namespace MessageBoard.Application.Messages.Commands
 
             _messageRepository.Add(message);
 
-            await _messageRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+            await _messageRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
             return MessageDto.Map(message);
         }
