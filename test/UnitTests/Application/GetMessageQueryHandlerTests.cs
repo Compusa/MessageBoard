@@ -34,11 +34,10 @@ namespace UnitTests.Application
             // Arrange
             const int messageId = 1;
 
-            var mockedMessage = new Mock<Message>();
-            mockedMessage.Setup(x => x.Id).Returns(messageId);
-
             var contextMock = new Mock<IReadOnlyMessageBoardContext>();
-            contextMock.Setup(x => x.FindAsync<Message>(It.IsAny<int>())).ReturnsAsync(mockedMessage.Object);
+            contextMock
+                .Setup(x => x.FindAsync<Message>(messageId))
+                .ReturnsAsync(() => new Message(string.Empty, 0));
 
             var query = new GetMessageQuery(messageId);
             var handler = new GetMessageQueryHandler(contextMock.Object);
@@ -48,7 +47,6 @@ namespace UnitTests.Application
 
             // Assert
             Assert.NotNull(messageDto);
-            Assert.Equal(messageId, messageDto.Id);
             contextMock.Verify(x => x.FindAsync<Message>(messageId), Times.Once);
         }
     }

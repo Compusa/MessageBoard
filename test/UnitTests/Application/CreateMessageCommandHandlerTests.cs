@@ -20,7 +20,7 @@ namespace UnitTests.Application
             var repositoryMock = new Mock<IMessageRepository>();
             repositoryMock.Setup(x => x.UnitOfWork).Returns(unitOfWorkMock.Object);
 
-            var command = new CreateMessageCommand("New message", 123);
+            var command = new CreateMessageCommand(string.Empty, 0);
             var handler = new CreateMessageCommandHandler(repositoryMock.Object);
 
             // Act
@@ -28,8 +28,6 @@ namespace UnitTests.Application
 
             // Assert
             Assert.NotNull(messageDto);
-            Assert.Equal(command.Message, messageDto.Message);
-            Assert.Equal(command.ClientId, messageDto.ClientId);
 
             repositoryMock.Verify(x => x.Add(It.IsAny<Message>()), Times.Once);
             repositoryMock.Verify(x => x.UnitOfWork, Times.Once);
