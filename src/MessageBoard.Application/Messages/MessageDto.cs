@@ -10,7 +10,7 @@ namespace MessageBoard.Application
 
         public string Message { get; set; }
 
-        public static MessageDto Map(Message message)
+        public static MessageDto Create(Message message)
         {
             return new MessageDto
             {

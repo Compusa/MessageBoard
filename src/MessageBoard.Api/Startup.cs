@@ -1,3 +1,4 @@
+using Hellang.Middleware.ProblemDetails;
 using MediatR;
 using MessageBoard.Application;
 using MessageBoard.Domain;
@@ -53,7 +54,8 @@ namespace MessageBoard.Api
                     options.IncludeXmlComments(xmlPath);
 
                     options.CustomSchemaIds((type) => type.Name.Replace("Dto", string.Empty).Replace("Command", string.Empty));
-                });
+                })
+                .AddProblemDetails();
 
             services
                 .AddDbContext<MessageBoardContext>(options =>
@@ -80,7 +82,7 @@ namespace MessageBoard.Api
 
             app.UseAuthorization();
 
-            //app.UseProblemDetails();
+            app.UseProblemDetails();
 
             app.UseEndpoints(endpoints =>
             {

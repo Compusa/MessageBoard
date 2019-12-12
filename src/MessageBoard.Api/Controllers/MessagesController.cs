@@ -16,6 +16,8 @@ namespace MessageBoard.Api.Controllers
     {
         private readonly IMediator _mediator;
 
+        public object SucceedeResult { get; private set; }
+
         public MessagesController(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
@@ -26,7 +28,7 @@ namespace MessageBoard.Api.Controllers
         /// </summary>
         [HttpGet("{id}", Name = "Get")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<MessageDto>> Get(int id)
         {
             var message = await _mediator.Send(new GetMessageQuery(id));
@@ -54,13 +56,13 @@ namespace MessageBoard.Api.Controllers
         /// Creates a new message.
         /// </summary>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(MessageDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<MessageDto>> Post([FromBody] string message)
+        public async Task<ActionResult<MessageDto>> Post([FromBody] CreateMessageCommand createMessageCommand)
         {
-            var createdMessage = await _mediator.Send(new CreateMessageCommand(message, 1));
+            var result = await _mediator.Send(createMessageCommand);
 
-            return CreatedAtAction(nameof(Get), new { id = createdMessage.Id }, createdMessage);
+            return FromResult(result, () => CreatedAtAction(nameof(Get), new { id = result.Value.Id }, result.Value));
         }
 
         /// <summary>
@@ -68,9 +70,9 @@ namespace MessageBoard.Api.Controllers
         /// </summary>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Put(int id, [FromBody] string message)
         {
             var result = await _mediator.Send(new UpdateMessageCommand(id, message, 1));
@@ -83,9 +85,9 @@ namespace MessageBoard.Api.Controllers
         /// </summary>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _mediator.Send(new DeleteMessageCommand(id, 1));

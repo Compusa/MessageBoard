@@ -21,7 +21,7 @@ namespace MessageBoard.Application.Messages.Queries
         {
             return await _messageBoardContext
                 .Messages
-                .Select(x => MessageDto.Map(x))
+                .Select(x => MessageDto.Create(x))
                 .ToListAsync(cancellationToken);
         }
     }

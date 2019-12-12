@@ -67,7 +67,7 @@ namespace UnitTests.Application
         }
 
         [Fact]
-        public async Task Should_succeed_with_status_updated_when_command_is_valid()
+        public async Task Should_succeed_with_status_updated_when_update_is_valid()
         {
             // Arrange
             var message = MockedMessageBuilder
