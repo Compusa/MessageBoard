@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MessageBoard.Api.Controllers
 {
-    [Route("api/messages")]
+    [Route("api/v1/messages")]
     [ApiController]
     public class MessagesController : ControllerBase
     {
@@ -69,6 +69,7 @@ namespace MessageBoard.Api.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Put(int id, [FromBody] string message)
         {
             var updatedMessage = await _mediator.Send(new UpdateMessageCommand(id, message, 1));
@@ -87,6 +88,7 @@ namespace MessageBoard.Api.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             var messageDeleted = await _mediator.Send(new DeleteMessageCommand(id, 1));

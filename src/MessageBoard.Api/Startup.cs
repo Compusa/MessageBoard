@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text.Json;
 
 namespace MessageBoard.Api
 {
@@ -30,23 +31,21 @@ namespace MessageBoard.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddDbContext<MessageBoardContext>(options =>
-                {
-                    options.UseInMemoryDatabase("MessageBoard");
-                });
+                .AddControllers()
+                .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
 
             services
-                .AddScoped<IReadOnlyMessageBoardContext, ReadOnlyMessageBoardContext>()
-                .AddScoped<IMessageRepository, MessageRepository>();
-
-            services.AddControllers();
-
-            services
-                //.AddProblemDetails()
                 .AddMediatR(typeof(MessageDto).Assembly)
                 .AddSwaggerGen(options =>
                 {
-                    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Message Board API", Version = "v1" });
+                    options.SwaggerDoc("v1", new OpenApiInfo
+                    {
+                        Title = "Message Board API",
+                        Version = "v1",
+                        Description = "A RESTful API to serve as the backend for a public message board.",
+                        License = new OpenApiLicense { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") },
+                        Contact = new OpenApiContact { Name = "GitHub repository", Url = new Uri("https://github.com/Compusa/MessageBoard") }
+                    });
 
                     // Set the comments path for the Swagger JSON and UI.
                     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -55,6 +54,16 @@ namespace MessageBoard.Api
 
                     options.CustomSchemaIds((type) => type.Name.Replace("Dto", string.Empty).Replace("Command", string.Empty));
                 });
+
+            services
+                .AddDbContext<MessageBoardContext>(options =>
+                {
+                    options.UseInMemoryDatabase("MessageBoard");
+                });
+
+            services
+                .AddScoped<IReadOnlyMessageBoardContext, ReadOnlyMessageBoardContext>()
+                .AddScoped<IMessageRepository, MessageRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
