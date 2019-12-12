@@ -13,8 +13,4 @@
     <ProjectReference Include="..\MessageBoard.Domain\MessageBoard.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="SeedWork\" />
-  </ItemGroup>
-
 </Project>

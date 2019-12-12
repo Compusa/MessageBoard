@@ -1,4 +1,5 @@
 ﻿using MessageBoard.Application.Messages.Commands;
+using MessageBoard.Application.SeedWork.Results.StatusCodes;
 using MessageBoard.Domain.AggregateModels.MessageAggregate;
 using MessageBoard.Domain.SeedWork;
 using Moq;
@@ -21,7 +22,7 @@ namespace UnitTests.Application
         }
 
         [Fact]
-        public async Task Should_return_false_when_deleting_message_that_does_not_exist()
+        public async Task Should_fail_with_status_not_found_when_deleting_message_that_does_not_exist()
         {
             // Arrange
             _mockedRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((Message)null);
@@ -30,16 +31,17 @@ namespace UnitTests.Application
             var handler = new DeleteMessageCommandHandler(_mockedRepository.Object);
 
             // Act
-            var isDeleted = await handler.Handle(command, default);
+            var result = await handler.Handle(command, default);
 
             // Assert
-            Assert.False(isDeleted);
+            Assert.True(result.Failed);
+            Assert.IsType<NotFound>(result.StatusCode);
 
             _mockedRepository.Verify(x => x.GetAsync(command.MessageId), Times.Once);
         }
 
         [Fact]
-        public async Task Should_return_false_when_attempting_to_delete_message_created_by_another_client()
+        public async Task Should_fail_with_status_forbidden_when_attempting_to_delete_message_created_by_another_client()
         {
             // Arrange
             var message = MockedMessageBuilder
@@ -49,20 +51,23 @@ namespace UnitTests.Application
                 .Build()
                 .Object;
 
+            _mockedRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(message);
+
             var command = new DeleteMessageCommand(message.Id, 2);
             var handler = new DeleteMessageCommandHandler(_mockedRepository.Object);
 
             // Act
-            var isDeleted = await handler.Handle(command, default);
+            var result = await handler.Handle(command, default);
 
             // Assert
-            Assert.False(isDeleted);
+            Assert.True(result.Failed);
+            Assert.IsType<Forbidden>(result.StatusCode);
 
             _mockedRepository.Verify(x => x.GetAsync(command.MessageId), Times.Once);
         }
 
         [Fact]
-        public async Task Should_return_true_when_delete_is_valid()
+        public async Task Should_succeed_with_status_deleted_when_delete_is_valid()
         {
             // Arrange
             var message = MockedMessageBuilder
@@ -80,10 +85,11 @@ namespace UnitTests.Application
             var handler = new DeleteMessageCommandHandler(_mockedRepository.Object);
 
             // Act
-            var isDeleted = await handler.Handle(command, default);
+            var result = await handler.Handle(command, default);
 
             // Assert
-            Assert.True(isDeleted);
+            Assert.True(result.Succeeded);
+            Assert.IsType<Deleted>(result.StatusCode);
 
             _mockedRepository.Verify(x => x.GetAsync(command.MessageId), Times.Once);
             _mockedRepository.Verify(x => x.Remove(message), Times.Once);

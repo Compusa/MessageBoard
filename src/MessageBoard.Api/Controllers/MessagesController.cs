@@ -12,7 +12,7 @@ namespace MessageBoard.Api.Controllers
 {
     [Route("api/v1/messages")]
     [ApiController]
-    public class MessagesController : ControllerBase
+    public class MessagesController : MessageBoardControllerBase
     {
         private readonly IMediator _mediator;
 
@@ -91,14 +91,9 @@ namespace MessageBoard.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var messageDeleted = await _mediator.Send(new DeleteMessageCommand(id, 1));
+            var result = await _mediator.Send(new DeleteMessageCommand(id, 1));
 
-            if (!messageDeleted)
-            {
-                return BadRequest();
-            }
-
-            return Ok();
+            return FromResult(result);
         }
     }
 }
