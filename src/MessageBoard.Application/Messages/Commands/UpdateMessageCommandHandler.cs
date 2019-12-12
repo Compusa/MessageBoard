@@ -1,11 +1,13 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using MessageBoard.Application.SeedWork.Results;
+using MessageBoard.Application.SeedWork.Results.StatusCodes;
 using MessageBoard.Domain.AggregateModels.MessageAggregate;
 
 namespace MessageBoard.Application.Messages.Commands
 {
-    public class UpdateMessageCommandHandler : IRequestHandler<UpdateMessageCommand, MessageDto>
+    public class UpdateMessageCommandHandler : IRequestHandler<UpdateMessageCommand, Result>
     {
         private readonly IMessageRepository _messageRepository;
 
@@ -14,18 +16,18 @@ namespace MessageBoard.Application.Messages.Commands
             _messageRepository = messageRepository;
         }
 
-        public async Task<MessageDto> Handle(UpdateMessageCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(UpdateMessageCommand request, CancellationToken cancellationToken)
         {
             var message = await _messageRepository.GetAsync(request.MessageId);
 
             if (message == null)
             {
-                return null; // NOT FOUND
+                return Result.Fail<NotFound>($"Message with id '{request.MessageId}' not found.");
             }
 
             if (message.ClientId != request.ClientId)
             {
-                return null;
+                return Result.Fail<Forbidden>("The message can only be deleted by the client that created it.");
             }
 
             message.UpdateContent(request.Message);
@@ -33,7 +35,7 @@ namespace MessageBoard.Application.Messages.Commands
 
             await _messageRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-            return MessageDto.Map(message);
+            return Result.Ok<Updated>();
         }
     }
 }

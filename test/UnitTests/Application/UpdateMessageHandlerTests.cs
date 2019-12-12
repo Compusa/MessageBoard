@@ -1,4 +1,5 @@
 ﻿using MessageBoard.Application.Messages.Commands;
+using MessageBoard.Application.SeedWork.Results.StatusCodes;
 using MessageBoard.Domain.AggregateModels.MessageAggregate;
 using MessageBoard.Domain.SeedWork;
 using Moq;
@@ -21,7 +22,7 @@ namespace UnitTests.Application
         }
 
         [Fact]
-        public async Task Should_return_null_when_updating_message_that_does_not_exist()
+        public async Task Should_fail_with_status_not_found_when_updating_message_that_does_not_exist()
         {
             // Arrange
             _mockedRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((Message)null);
@@ -30,15 +31,17 @@ namespace UnitTests.Application
             var handler = new UpdateMessageCommandHandler(_mockedRepository.Object);
 
             // Act
-            var updatedMessage = await handler.Handle(command, default);
+            var result = await handler.Handle(command, default);
 
             // Assert
-            Assert.Null(updatedMessage);
+            Assert.True(result.Failed);
+            Assert.IsType<NotFound>(result.StatusCode);
+
             _mockedRepository.Verify(x => x.GetAsync(command.MessageId), Times.Once);
         }
 
         [Fact]
-        public async Task Should_return_null_when_attempting_to_update_message_created_by_another_client()
+        public async Task Should_fail_with_status_forbidden_when_attempting_to_update_message_created_by_another_client()
         {
             // Arrange
             var message = MockedMessageBuilder
@@ -54,15 +57,17 @@ namespace UnitTests.Application
             var handler = new UpdateMessageCommandHandler(_mockedRepository.Object);
 
             // Act
-            var updatedMessage = await handler.Handle(command, default);
+            var result = await handler.Handle(command, default);
 
             // Assert
-            Assert.Null(updatedMessage);
+            Assert.True(result.Failed);
+            Assert.IsType<Forbidden>(result.StatusCode);
+
             _mockedRepository.Verify(x => x.GetAsync(command.MessageId), Times.Once);
         }
 
         [Fact]
-        public async Task Should_return_updated_message_when_command_values_adheres_to_requirements()
+        public async Task Should_succeed_with_status_updated_when_command_is_valid()
         {
             // Arrange
             var message = MockedMessageBuilder
@@ -80,12 +85,13 @@ namespace UnitTests.Application
             var handler = new UpdateMessageCommandHandler(_mockedRepository.Object);
 
             // Act
-            var updatedMessage = await handler.Handle(command, default);
+            var result = await handler.Handle(command, default);
 
             // Assert
-            Assert.NotNull(updatedMessage);
-            Assert.Equal(command.MessageId, updatedMessage.Id);
-            Assert.Equal(command.Message, updatedMessage.Message);
+            Assert.True(result.Succeeded);
+            Assert.IsType<Updated>(result.StatusCode);
+            Assert.Equal(command.MessageId, message.Id);
+            Assert.Equal(command.Message, message.Content);
 
             _mockedRepository.Verify(x => x.GetAsync(command.MessageId), Times.Once);
             _mockedRepository.Verify(x => x.Update(message), Times.Once);

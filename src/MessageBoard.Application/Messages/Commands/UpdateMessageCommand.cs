@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using MessageBoard.Domain.AggregateModels.MessageAggregate;
+using MessageBoard.Application.SeedWork.Results;
 
 namespace MessageBoard.Application.Messages.Commands
 {
-    public class UpdateMessageCommand : IRequest<MessageDto>
+    public class UpdateMessageCommand : IRequest<Result>
     {
         public UpdateMessageCommand(int messageId, string message, int clientId)
         {

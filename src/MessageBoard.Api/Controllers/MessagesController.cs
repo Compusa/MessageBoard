@@ -69,17 +69,13 @@ namespace MessageBoard.Api.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Put(int id, [FromBody] string message)
         {
-            var updatedMessage = await _mediator.Send(new UpdateMessageCommand(id, message, 1));
+            var result = await _mediator.Send(new UpdateMessageCommand(id, message, 1));
 
-            if (updatedMessage == null)
-            {
-                return BadRequest();
-            }
-
-            return Ok();
+            return FromResult(result);
         }
 
         /// <summary>
@@ -88,6 +84,7 @@ namespace MessageBoard.Api.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
