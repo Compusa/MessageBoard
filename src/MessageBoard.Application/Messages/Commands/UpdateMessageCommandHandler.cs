@@ -32,7 +32,7 @@ namespace MessageBoard.Application.Messages.Commands
 
             if (string.IsNullOrWhiteSpace(request.Message))
             {
-                return Result.Fail<BadRequest, MessageDto>("Message is required.");
+                return Result.Fail<BadRequest>("Message is required.");
             }
 
             message.UpdateContent(request.Message);
