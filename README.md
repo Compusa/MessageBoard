@@ -49,7 +49,7 @@ This is the very first draft of the message board, and it was created on my spar
 * HATEOAS
 * Nullable reference types
 * Use authentication header instead of clientId header (which actuallly should be named X-Cliend-Id instead of clientId if not replaced)
-* Better test coverage and integration tests
+* Better test coverage, controllers and domain not tested at the moment. Add integration tests (use EF Core in memory).
 * Use FluentValidation to validate commands, instead of validation of commands in command handlers
 * Logging and error handling
 * Richer and more robust DDD implementation
