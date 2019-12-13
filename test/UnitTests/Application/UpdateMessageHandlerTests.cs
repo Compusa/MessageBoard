@@ -3,6 +3,7 @@ using MessageBoard.Application.SeedWork.Results.StatusCodes;
 using MessageBoard.Domain.AggregateModels.MessageAggregate;
 using MessageBoard.Domain.SeedWork;
 using Moq;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using UnitTests.Mocks;
@@ -27,7 +28,7 @@ namespace UnitTests.Application
             // Arrange
             _mockedRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((BoardMessage)null);
 
-            var command = new UpdateMessageCommand(1, "The message", 2);
+            var command = new UpdateMessageCommand(1, "The message", Guid.NewGuid().ToString());
             var handler = new UpdateMessageCommandHandler(_mockedRepository.Object);
 
             // Act
@@ -40,20 +41,38 @@ namespace UnitTests.Application
             _mockedRepository.Verify(x => x.GetAsync(command.MessageId), Times.Once);
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("     ")]
+        public async Task Should_fail_with_status_bad_request_when_message_is_null_or_empty(string message)
+        {
+            // Arrange
+            var command = new UpdateMessageCommand(1, message, Guid.NewGuid().ToString());
+            var handler = new UpdateMessageCommandHandler(_mockedRepository.Object);
+
+            // Act
+            var result = await handler.Handle(command, default);
+
+            // Assert
+            Assert.True(result.Failed);
+            Assert.IsType<BadRequest>(result.StatusCode);
+        }
+
         [Fact]
         public async Task Should_fail_with_status_bad_request_when_attempting_to_update_message_created_by_another_client()
         {
             // Arrange
             var message = MockedMessageBuilder
                 .SetId(1)
-                .SetContent("The message")
-                .SetClientId(1)
+                .SetMessage("The message")
+                .SetClientId(Guid.NewGuid().ToString())
                 .Build()
                 .Object;
 
             _mockedRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(message);
 
-            var command = new UpdateMessageCommand(message.Id, "Attempt to update another client's message", 2);
+            var command = new UpdateMessageCommand(message.Id, "Attempt to update another client's message", Guid.NewGuid().ToString());
             var handler = new UpdateMessageCommandHandler(_mockedRepository.Object);
 
             // Act
@@ -72,8 +91,8 @@ namespace UnitTests.Application
             // Arrange
             var message = MockedMessageBuilder
                 .SetId(1)
-                .SetContent("The message")
-                .SetClientId(1)
+                .SetMessage("The message")
+                .SetClientId(Guid.NewGuid().ToString())
                 .Build()
                 .Object;
 

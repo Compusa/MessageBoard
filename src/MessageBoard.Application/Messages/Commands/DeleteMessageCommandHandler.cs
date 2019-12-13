@@ -4,6 +4,7 @@ using MediatR;
 using MessageBoard.Application.SeedWork.Results;
 using MessageBoard.Application.SeedWork.Results.StatusCodes;
 using MessageBoard.Domain.AggregateModels.MessageAggregate;
+using System;
 
 namespace MessageBoard.Application.Messages.Commands
 {
@@ -18,6 +19,11 @@ namespace MessageBoard.Application.Messages.Commands
 
         public async Task<Result> Handle(DeleteMessageCommand request, CancellationToken cancellationToken)
         {
+            if (string.IsNullOrWhiteSpace(request.ClientId))
+            {
+                return Result.Fail<BadRequest, MessageDto>("ClientId is required.");
+            }
+
             var message = await _messageRepository.GetAsync(request.MessageId);
 
             if (message == null)
@@ -25,7 +31,7 @@ namespace MessageBoard.Application.Messages.Commands
                 return Result.Fail<NotFound>();
             }
 
-            if (message.ClientId != request.ClientId)
+            if (!string.Equals(message.ClientId, request.ClientId, StringComparison.OrdinalIgnoreCase))
             {
                 return Result.Fail<BadRequest>("The message can only be deleted by the client that created it.");
             }

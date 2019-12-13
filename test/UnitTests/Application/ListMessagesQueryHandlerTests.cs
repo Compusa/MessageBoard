@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using MockQueryable.Moq;
+using System;
 
 namespace UnitTests.Application
 {
@@ -44,7 +45,7 @@ namespace UnitTests.Application
             // Arrange
             var messages = new List<BoardMessage>
             {
-                BoardMessage.Create("The message", 1)
+                BoardMessage.Create("The message", Guid.NewGuid().ToString())
             };
 
             _mockedReadOnlyContext.Setup(x => x.Messages).Returns(messages.AsQueryable().BuildMock().Object);
@@ -66,9 +67,9 @@ namespace UnitTests.Application
             // Arrange
             var messages = new List<BoardMessage>
             {
-                BoardMessage.Create("First message", 1),
-                BoardMessage.Create("Second message", 2),
-                BoardMessage.Create("Third message", 3)
+                BoardMessage.Create("First message", Guid.NewGuid().ToString()),
+                BoardMessage.Create("Second message", Guid.NewGuid().ToString()),
+                BoardMessage.Create("Third message", Guid.NewGuid().ToString())
             };
 
             _mockedReadOnlyContext.Setup(x => x.Messages).Returns(messages.AsQueryable().BuildMock().Object);

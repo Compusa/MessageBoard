@@ -6,18 +6,14 @@ namespace MessageBoard.Application.Messages.Commands
 {
     public class CreateMessageCommand : IRequest<Result<MessageDto>>
     {
-        public CreateMessageCommand()
-        {
-        }
-
-        public CreateMessageCommand(string message, int clientId)
+        public CreateMessageCommand(string message, string clientId)
         {
             Message = message?.Trim();
             ClientId = clientId;
         }
 
-        public string Message { get; set; }
+        public string Message { get; }
 
-        public int ClientId { get; set; }
+        public string ClientId { get; }
     }
 }

@@ -16,8 +16,6 @@ namespace MessageBoard.Api.Controllers
     {
         private readonly IMediator _mediator;
 
-        public object SucceedeResult { get; private set; }
-
         public MessagesController(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
@@ -58,9 +56,9 @@ namespace MessageBoard.Api.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(MessageDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<MessageDto>> Post([FromBody] CreateMessageCommand createMessageCommand)
-        {
-            var result = await _mediator.Send(createMessageCommand);
+        public async Task<ActionResult<MessageDto>> Post([FromHeader] string clientId, [FromBody] string message)
+        {        
+            var result = await _mediator.Send(new CreateMessageCommand(message, clientId));
 
             return FromResult(result, () => CreatedAtAction(nameof(Get), new { id = result.Value.Id }, result.Value));
         }
@@ -72,11 +70,9 @@ namespace MessageBoard.Api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Put(int id, [FromBody] UpdateMessageCommand updateMessageCommand)
+        public async Task<IActionResult> Put(int id, [FromHeader]string clientId, [FromBody] string message)
         {
-            updateMessageCommand.MessageId = id;
-
-            var result = await _mediator.Send(updateMessageCommand);
+            var result = await _mediator.Send(new UpdateMessageCommand(id, message, clientId));
 
             return FromResult(result);
         }
@@ -88,9 +84,9 @@ namespace MessageBoard.Api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, [FromHeader]string clientId)
         {
-            var result = await _mediator.Send(new DeleteMessageCommand(id, 1));
+            var result = await _mediator.Send(new DeleteMessageCommand(id, clientId));
 
             return FromResult(result);
         }

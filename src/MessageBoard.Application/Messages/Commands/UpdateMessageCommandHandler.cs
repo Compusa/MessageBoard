@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using MessageBoard.Application.SeedWork.Results;
@@ -18,6 +19,16 @@ namespace MessageBoard.Application.Messages.Commands
 
         public async Task<Result> Handle(UpdateMessageCommand request, CancellationToken cancellationToken)
         {
+            if (string.IsNullOrWhiteSpace(request.ClientId))
+            {
+                return Result.Fail<BadRequest, MessageDto>("ClientId is required.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Message))
+            {
+                return Result.Fail<BadRequest>("Message is required.");
+            }
+
             var message = await _messageRepository.GetAsync(request.MessageId);
 
             if (message == null)
@@ -25,14 +36,9 @@ namespace MessageBoard.Application.Messages.Commands
                 return Result.Fail<NotFound>();
             }
 
-            if (message.ClientId != request.ClientId)
+            if (!string.Equals(message.ClientId, request.ClientId, StringComparison.OrdinalIgnoreCase))
             {
-                return Result.Fail<BadRequest>("The message can only be deleted by the client that created it.");
-            }
-
-            if (string.IsNullOrWhiteSpace(request.Message))
-            {
-                return Result.Fail<BadRequest>("Message is required.");
+                return Result.Fail<BadRequest>("The message can only be updated by the client that created it.");
             }
 
             message.UpdateContent(request.Message);

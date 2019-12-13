@@ -6,14 +6,14 @@ namespace MessageBoard.Domain.AggregateModels.MessageAggregate
 {
     public class BoardMessage : Entity, IAggregateRoot
     {
-        protected BoardMessage(string message, int clientId, DateTimeOffset createdAt)
+        protected BoardMessage(string message, string clientId, DateTimeOffset createdAt)
         {
             if (string.IsNullOrWhiteSpace(message))
             {
                 throw new MessageBoardDomainException($"{nameof(message)} is required, null or empty not allowed.");
             }
 
-            if (clientId < 0)
+            if (string.IsNullOrWhiteSpace(clientId))
             {
                 throw new MessageBoardDomainException($"{nameof(clientId)} is required, null or empty not allowed.");
             }
@@ -23,7 +23,7 @@ namespace MessageBoard.Domain.AggregateModels.MessageAggregate
             CreatedAt = createdAt;
         }
 
-        public int ClientId { get; private set; }
+        public string ClientId { get; private set; }
 
         public string Message { get; private set; }
 
@@ -37,7 +37,7 @@ namespace MessageBoard.Domain.AggregateModels.MessageAggregate
             ModifiedAt = DateTimeOffset.UtcNow;
         }
 
-        public static BoardMessage Create(string message, int clientId)
+        public static BoardMessage Create(string message, string clientId)
         {
             return new BoardMessage(message, clientId, DateTimeOffset.UtcNow);
         }

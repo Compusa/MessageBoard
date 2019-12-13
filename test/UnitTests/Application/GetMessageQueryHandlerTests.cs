@@ -2,6 +2,7 @@
 using MessageBoard.Domain;
 using MessageBoard.Domain.AggregateModels.MessageAggregate;
 using Moq;
+using System;
 using System.Threading.Tasks;
 using UnitTests.Mocks;
 using Xunit;
@@ -42,8 +43,8 @@ namespace UnitTests.Application
             // Arrange
             var message = MockedMessageBuilder
                 .SetId(1)
-                .SetContent("The message")
-                .SetClientId(2)
+                .SetMessage("The message")
+                .SetClientId(Guid.NewGuid().ToString())
                 .Build().Object;
 
             _mockedReadOnlyContext

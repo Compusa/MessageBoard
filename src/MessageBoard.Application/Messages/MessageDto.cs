@@ -7,7 +7,7 @@ namespace MessageBoard.Application
     {
         public int Id { get; set; }
 
-        public int ClientId { get; set; }
+        public string ClientId { get; set; }
 
         public string Message { get; set; }
 

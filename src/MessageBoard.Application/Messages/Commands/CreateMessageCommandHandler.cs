@@ -23,7 +23,7 @@ namespace MessageBoard.Application.Messages.Commands
                 return Result.Fail<BadRequest, MessageDto>("Message is required.");
             }
 
-            if (request.ClientId < 1)
+            if (string.IsNullOrWhiteSpace(request.ClientId))
             {
                 return Result.Fail<BadRequest, MessageDto>("ClientId is required.");
             }

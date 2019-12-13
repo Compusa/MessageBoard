@@ -3,6 +3,7 @@ using MessageBoard.Application.SeedWork.Results.StatusCodes;
 using MessageBoard.Domain.AggregateModels.MessageAggregate;
 using MessageBoard.Domain.SeedWork;
 using Moq;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using UnitTests.Mocks;
@@ -21,13 +22,31 @@ namespace UnitTests.Application
             _mockedRepository = new Mock<IBoardMessageRepository>();
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("     ")]
+        public async Task Should_fail_with_status_bad_request_when_client_id_is_null_or_empty(string clientId)
+        {
+            // Arrange
+            var command = new DeleteMessageCommand(1, clientId);
+            var handler = new DeleteMessageCommandHandler(_mockedRepository.Object);
+
+            // Act
+            var result = await handler.Handle(command, default);
+
+            // Assert
+            Assert.True(result.Failed);
+            Assert.IsType<BadRequest>(result.StatusCode);
+        }
+
         [Fact]
         public async Task Should_fail_with_status_not_found_when_deleting_message_that_does_not_exist()
         {
             // Arrange
             _mockedRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((BoardMessage)null);
 
-            var command = new DeleteMessageCommand(1, 2);
+            var command = new DeleteMessageCommand(1, Guid.NewGuid().ToString());
             var handler = new DeleteMessageCommandHandler(_mockedRepository.Object);
 
             // Act
@@ -46,14 +65,14 @@ namespace UnitTests.Application
             // Arrange
             var message = MockedMessageBuilder
                 .SetId(1)
-                .SetContent("The message")
-                .SetClientId(1)
+                .SetMessage("The message")
+                .SetClientId(Guid.NewGuid().ToString())
                 .Build()
                 .Object;
 
             _mockedRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(message);
 
-            var command = new DeleteMessageCommand(message.Id, 2);
+            var command = new DeleteMessageCommand(message.Id, Guid.NewGuid().ToString());
             var handler = new DeleteMessageCommandHandler(_mockedRepository.Object);
 
             // Act
@@ -72,8 +91,8 @@ namespace UnitTests.Application
             // Arrange
             var message = MockedMessageBuilder
                 .SetId(1)
-                .SetContent("The message")
-                .SetClientId(1)
+                .SetMessage("The message")
+                .SetClientId(Guid.NewGuid().ToString())
                 .Build()
                 .Object;
 

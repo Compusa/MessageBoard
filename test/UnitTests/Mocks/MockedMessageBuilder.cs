@@ -10,7 +10,7 @@ namespace UnitTests.Mocks
 
         private string _content;
 
-        private int _clientId;
+        private string _clientId;
 
         private MockedMessageBuilder(int messageId)
         {
@@ -22,14 +22,14 @@ namespace UnitTests.Mocks
             return new MockedMessageBuilder(id);
         }
 
-        public MockedMessageBuilder SetContent(string content)
+        public MockedMessageBuilder SetMessage(string content)
         {
             _content = content;
 
             return this;
         }
 
-        public MockedMessageBuilder SetClientId(int clientId)
+        public MockedMessageBuilder SetClientId(string clientId)
         {
             _clientId = clientId;
 

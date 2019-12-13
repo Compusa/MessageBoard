@@ -5,14 +5,14 @@ namespace MessageBoard.Application.Messages.Commands
 {
     public class DeleteMessageCommand : IRequest<Result>
     {
-        public DeleteMessageCommand(int messageId, int clientId)
+        public DeleteMessageCommand(int messageId, string clientId)
         {
             MessageId = messageId;
             ClientId = clientId;
         }
 
-        public int MessageId { get; set; }
+        public int MessageId { get; }
 
-        public int ClientId { get; set; }
+        public string ClientId { get; }
     }
 }
