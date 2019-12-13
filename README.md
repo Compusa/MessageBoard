@@ -22,3 +22,24 @@ https://dotnet.microsoft.com/download/dotnet-core/3.1
 
 ## Instructions for building, testing and running the solution
 You can build, test and run the solution with The .NET Core command-line interface (CLI). Open up your command prompt/terminal of choice and be sure to set the folder where `MessageBoard.sln` is located as the working directory.
+
+#### Build
+```
+dotnet build MessageBoard.sln
+```
+
+#### Test
+```
+dotnet test MessageBoard.sln
+```
+
+#### Run
+```
+dotnet run --project .\src\MessageBoard.Api
+```
+
+The MessageBoard API service will be up and running when the command has completed, and listening for incoming requests at:
+https://localhost:5001/api/v1/messages
+
+The Message Board API is documented with Swagger and you can explore and test the API at:
+https://localhost:5001/swagger
