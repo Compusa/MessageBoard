@@ -15,3 +15,7 @@ There is still much left to do, improve or consider such as:
 * FluentValidation for commands
 * Logging and error handling
 * Richer and more robust DDD implementation
+
+## Prerequisite
+.NET Core 3.1
+https://dotnet.microsoft.com/download/dotnet-core/3.1
