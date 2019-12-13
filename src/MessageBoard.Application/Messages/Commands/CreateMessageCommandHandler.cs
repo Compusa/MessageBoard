@@ -16,6 +16,7 @@ namespace MessageBoard.Application.Messages.Commands
             _messageRepository = messageRepository;
         }
 
+        // TODO: Use FluentValidation for CreateMessageCommand to get rid of the validation of the params in the handler
         public async Task<Result<MessageDto>> Handle(CreateMessageCommand request, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(request.Message))
