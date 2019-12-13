@@ -42,7 +42,7 @@ The CI workflow performs the following actions for each of the latest distributi
 * Build with dotnet
 * Test with dotnet
 
-## Worth noting
+## Limited scope (first draft)
 This is the very first draft of the message board, and it was created on my spare time (after my working days) in less than a week. There is still much left to do, improve or consider such as:
 * Docker support
 * Pagination
