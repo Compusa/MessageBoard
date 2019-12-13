@@ -1,4 +1,5 @@
 ﻿using MessageBoard.Domain.AggregateModels.MessageAggregate;
+using System;
 
 namespace MessageBoard.Application
 {
@@ -10,13 +11,19 @@ namespace MessageBoard.Application
 
         public string Message { get; set; }
 
-        public static MessageDto Create(Message message)
+        public DateTimeOffset CreatedAt { get; set; }
+
+        public DateTimeOffset? ModifiedAt { get; set; }
+
+        public static MessageDto Create(BoardMessage boardMessage)
         {
             return new MessageDto
             {
-                Id = message.Id,
-                ClientId = message.ClientId,
-                Message = message.Content
+                Id = boardMessage.Id,
+                ClientId = boardMessage.ClientId,
+                Message = boardMessage.Message,
+                CreatedAt = boardMessage.CreatedAt,
+                ModifiedAt = boardMessage.ModifiedAt
             };
         }
     }

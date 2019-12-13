@@ -13,19 +13,19 @@ namespace UnitTests.Application
     public class DeleteMessageHandlerTests
     {
         private readonly Mock<IUnitOfWork> _mockedUnitOfWork;
-        private readonly Mock<IMessageRepository> _mockedRepository;
+        private readonly Mock<IBoardMessageRepository> _mockedRepository;
 
         public DeleteMessageHandlerTests()
         {
             _mockedUnitOfWork = new Mock<IUnitOfWork>();
-            _mockedRepository = new Mock<IMessageRepository>();
+            _mockedRepository = new Mock<IBoardMessageRepository>();
         }
 
         [Fact]
         public async Task Should_fail_with_status_not_found_when_deleting_message_that_does_not_exist()
         {
             // Arrange
-            _mockedRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((Message)null);
+            _mockedRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((BoardMessage)null);
 
             var command = new DeleteMessageCommand(1, 2);
             var handler = new DeleteMessageCommandHandler(_mockedRepository.Object);

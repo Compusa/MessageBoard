@@ -35,9 +35,9 @@ namespace UnitTests.Mocks
             return this;
         }
 
-        public Mock<Message> Build()
+        public Mock<BoardMessage> Build()
         {
-            var messageMock = new Mock<Message>(_content, _clientId);
+            var messageMock = new Mock<BoardMessage>(_content, _clientId);
             messageMock.Setup(x => x.Id).Returns(_messageId);
 
             return messageMock;

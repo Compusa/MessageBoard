@@ -65,7 +65,7 @@ namespace MessageBoard.Api
 
             services
                 .AddScoped<IReadOnlyMessageBoardContext, ReadOnlyMessageBoardContext>()
-                .AddScoped<IMessageRepository, MessageRepository>();
+                .AddScoped<IBoardMessageRepository, BoardMessageRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

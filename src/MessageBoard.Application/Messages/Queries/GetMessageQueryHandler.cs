@@ -17,7 +17,7 @@ namespace MessageBoard.Application.Messages.Queries
 
         public async Task<MessageDto> Handle(GetMessageQuery request, CancellationToken cancellationToken)
         {
-            var message = await _messageBoardContext.FindAsync<Message>(request.Id);
+            var message = await _messageBoardContext.FindAsync<BoardMessage>(request.Id);
 
             if (message == null)
             {

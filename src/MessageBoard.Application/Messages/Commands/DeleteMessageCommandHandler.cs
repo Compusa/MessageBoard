@@ -9,9 +9,9 @@ namespace MessageBoard.Application.Messages.Commands
 {
     public class DeleteMessageCommandHandler : IRequestHandler<DeleteMessageCommand, Result>
     {
-        private readonly IMessageRepository _messageRepository;
+        private readonly IBoardMessageRepository _messageRepository;
 
-        public DeleteMessageCommandHandler(IMessageRepository messageRepository)
+        public DeleteMessageCommandHandler(IBoardMessageRepository messageRepository)
         {
             _messageRepository = messageRepository;
         }

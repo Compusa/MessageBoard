@@ -12,12 +12,12 @@ namespace UnitTests.Application
     public class CreateMessageCommandHandlerTests
     {
         private readonly Mock<IUnitOfWork> _mockedUnitOfWork;
-        private readonly Mock<IMessageRepository> _mockedRepository;
+        private readonly Mock<IBoardMessageRepository> _mockedRepository;
 
         public CreateMessageCommandHandlerTests()
         {
             _mockedUnitOfWork = new Mock<IUnitOfWork>();
-            _mockedRepository = new Mock<IMessageRepository>();
+            _mockedRepository = new Mock<IBoardMessageRepository>();
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace UnitTests.Application
             Assert.Equal(command.Message, result.Value.Message);
             Assert.Equal(command.ClientId, result.Value.ClientId);
 
-            _mockedRepository.Verify(x => x.Add(It.IsAny<Message>()), Times.Once);
+            _mockedRepository.Verify(x => x.Add(It.IsAny<BoardMessage>()), Times.Once);
             _mockedUnitOfWork.Verify(x => x.SaveChangesAsync(default), Times.Once);
         }
     }

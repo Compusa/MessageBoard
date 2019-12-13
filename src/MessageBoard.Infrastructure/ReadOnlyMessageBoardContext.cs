@@ -18,7 +18,7 @@ namespace MessageBoard.Infrastructure
             _context = context;
         }
 
-        public IQueryable<Message> Messages => _context.Messages.AsNoTracking();
+        public IQueryable<BoardMessage> Messages => _context.Messages.AsNoTracking();
 
         public ValueTask<TEntity> FindAsync<TEntity>(params object[] keyValues) where TEntity : class
         {

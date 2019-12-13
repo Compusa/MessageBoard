@@ -13,6 +13,6 @@ namespace MessageBoard.Infrastructure
         {
         }
 
-        public DbSet<Message> Messages { get; set; }
+        public DbSet<BoardMessage> Messages { get; set; }
     }
 }

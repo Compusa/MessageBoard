@@ -9,9 +9,9 @@ namespace MessageBoard.Application.Messages.Commands
 {
     public class UpdateMessageCommandHandler : IRequestHandler<UpdateMessageCommand, Result>
     {
-        private readonly IMessageRepository _messageRepository;
+        private readonly IBoardMessageRepository _messageRepository;
 
-        public UpdateMessageCommandHandler(IMessageRepository messageRepository)
+        public UpdateMessageCommandHandler(IBoardMessageRepository messageRepository)
         {
             _messageRepository = messageRepository;
         }

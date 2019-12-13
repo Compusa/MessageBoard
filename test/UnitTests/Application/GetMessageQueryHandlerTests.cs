@@ -22,7 +22,7 @@ namespace UnitTests.Application
         {
             // Arrange
             _mockedReadOnlyContext
-                .Setup(x => x.FindAsync<Message>(It.IsAny<int>()))
+                .Setup(x => x.FindAsync<BoardMessage>(It.IsAny<int>()))
                 .ReturnsAsync(() => null);
 
             var query = new GetMessageQuery(1);
@@ -33,7 +33,7 @@ namespace UnitTests.Application
 
             // Assert
             Assert.Null(messageDto);
-            _mockedReadOnlyContext.Verify(x => x.FindAsync<Message>(query.Id), Times.Once);
+            _mockedReadOnlyContext.Verify(x => x.FindAsync<BoardMessage>(query.Id), Times.Once);
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace UnitTests.Application
                 .Build().Object;
 
             _mockedReadOnlyContext
-                .Setup(x => x.FindAsync<Message>(It.IsAny<int>()))
+                .Setup(x => x.FindAsync<BoardMessage>(It.IsAny<int>()))
                 .ReturnsAsync(() => message);
 
             var query = new GetMessageQuery(message.Id);
@@ -58,7 +58,7 @@ namespace UnitTests.Application
 
             // Assert
             Assert.NotNull(messageDto);
-            _mockedReadOnlyContext.Verify(x => x.FindAsync<Message>(message.Id), Times.Once);
+            _mockedReadOnlyContext.Verify(x => x.FindAsync<BoardMessage>(message.Id), Times.Once);
         }
     }
 }

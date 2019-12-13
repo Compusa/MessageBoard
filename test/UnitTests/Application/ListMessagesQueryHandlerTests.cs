@@ -23,7 +23,7 @@ namespace UnitTests.Application
         public async Task Should_return_empty_array_when_no_messages_exist()
         {
             // Arrange
-            var messages = new List<Message>();
+            var messages = new List<BoardMessage>();
 
             _mockedReadOnlyContext.Setup(x => x.Messages).Returns(messages.AsQueryable().BuildMock().Object);
 
@@ -42,9 +42,9 @@ namespace UnitTests.Application
         public async Task Should_return_non_empty_array_when_message_exists()
         {
             // Arrange
-            var messages = new List<Message>
+            var messages = new List<BoardMessage>
             {
-                new Message("The message", 1)
+                BoardMessage.Create("The message", 1)
             };
 
             _mockedReadOnlyContext.Setup(x => x.Messages).Returns(messages.AsQueryable().BuildMock().Object);
@@ -64,11 +64,11 @@ namespace UnitTests.Application
         public async Task Should_return_expected_number_of_items()
         {
             // Arrange
-            var messages = new List<Message>
+            var messages = new List<BoardMessage>
             {
-                new Message("First message", 1),
-                new Message("Second message", 2),
-                new Message("Third message", 3)
+                BoardMessage.Create("First message", 1),
+                BoardMessage.Create("Second message", 2),
+                BoardMessage.Create("Third message", 3)
             };
 
             _mockedReadOnlyContext.Setup(x => x.Messages).Returns(messages.AsQueryable().BuildMock().Object);

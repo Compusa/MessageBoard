@@ -13,19 +13,19 @@ namespace UnitTests.Application
     public class UpdateMessageHandlerTests
     {
         private readonly Mock<IUnitOfWork> _mockedUnitOfWork;
-        private readonly Mock<IMessageRepository> _mockedRepository;
+        private readonly Mock<IBoardMessageRepository> _mockedRepository;
 
         public UpdateMessageHandlerTests()
         {
             _mockedUnitOfWork = new Mock<IUnitOfWork>();
-            _mockedRepository = new Mock<IMessageRepository>();
+            _mockedRepository = new Mock<IBoardMessageRepository>();
         }
 
         [Fact]
         public async Task Should_fail_with_status_not_found_when_updating_message_that_does_not_exist()
         {
             // Arrange
-            _mockedRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((Message)null);
+            _mockedRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((BoardMessage)null);
 
             var command = new UpdateMessageCommand(1, "The message", 2);
             var handler = new UpdateMessageCommandHandler(_mockedRepository.Object);
@@ -91,7 +91,7 @@ namespace UnitTests.Application
             Assert.True(result.Succeeded);
             Assert.IsType<Updated>(result.StatusCode);
             Assert.Equal(command.MessageId, message.Id);
-            Assert.Equal(command.Message, message.Content);
+            Assert.Equal(command.Message, message.Message);
 
             _mockedRepository.Verify(x => x.GetAsync(command.MessageId), Times.Once);
             _mockedRepository.Verify(x => x.Update(message), Times.Once);

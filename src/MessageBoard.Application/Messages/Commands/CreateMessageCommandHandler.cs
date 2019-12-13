@@ -9,9 +9,9 @@ namespace MessageBoard.Application.Messages.Commands
 {
     public class CreateMessageCommandHandler : IRequestHandler<CreateMessageCommand, Result<MessageDto>>
     {
-        private readonly IMessageRepository _messageRepository;
+        private readonly IBoardMessageRepository _messageRepository;
 
-        public CreateMessageCommandHandler(IMessageRepository messageRepository)
+        public CreateMessageCommandHandler(IBoardMessageRepository messageRepository)
         {
             _messageRepository = messageRepository;
         }
@@ -28,7 +28,7 @@ namespace MessageBoard.Application.Messages.Commands
                 return Result.Fail<BadRequest, MessageDto>("ClientId is required.");
             }
 
-            var message = new Message(request.Message, request.ClientId);
+            var message = BoardMessage.Create(request.Message, request.ClientId);
 
             _messageRepository.Add(message);
 

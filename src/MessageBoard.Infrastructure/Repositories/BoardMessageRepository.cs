@@ -6,33 +6,33 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MessageBoard.Infrastructure.Repositories
 {
-    public class MessageRepository : IMessageRepository
+    public class BoardMessageRepository : IBoardMessageRepository
     {
         private readonly MessageBoardContext _context;
 
-        public MessageRepository(MessageBoardContext context)
+        public BoardMessageRepository(MessageBoardContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public IUnitOfWork UnitOfWork => _context;
 
-        public Message Add(Message message)
+        public BoardMessage Add(BoardMessage message)
         {
             return _context.Add(message).Entity;
         }
 
-        public void Update(Message message)
+        public void Update(BoardMessage message)
         {
             _context.Entry(message).State = EntityState.Modified;
         }
 
-        public void Remove(Message message)
+        public void Remove(BoardMessage message)
         {
             _context.Entry(message).State = EntityState.Deleted;
         }
 
-        public async Task<Message> GetAsync(int messageId)
+        public async Task<BoardMessage> GetAsync(int messageId)
         {
             return await _context.Messages.FindAsync(messageId);
         }

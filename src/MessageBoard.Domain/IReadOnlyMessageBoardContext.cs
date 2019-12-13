@@ -7,7 +7,7 @@ namespace MessageBoard.Domain
 
     public interface IReadOnlyMessageBoardContext
     {
-        IQueryable<Message> Messages { get; }
+        IQueryable<BoardMessage> Messages { get; }
 
         /// <summary>
         /// Finds an entity with the given primary key values. If an entity with the given
