@@ -50,7 +50,7 @@ This is the very first draft of the message board, and it was created on my spar
 * Nullable reference types
 * Use authentication header instead of clientId header (which actuallly should be named X-Cliend-Id instead of clientId)
 * Better test coverage and integration tests
-* FluentValidation for commands
+* FluentValidation for commands, cleaner commands
 * Logging and error handling
 * Richer and more robust DDD implementation
 * Code documentation
