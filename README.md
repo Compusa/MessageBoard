@@ -21,4 +21,4 @@ There is still much left to do, improve or consider such as:
 https://dotnet.microsoft.com/download/dotnet-core/3.1
 
 ## Instructions for building, testing and running the solution
-You can build, test and run the solution with The .NET Core command-line interface (CLI). Open up your command prompt/terminal of choice and be sure to set the `MessageBoard` folder as the working directory.
+You can build, test and run the solution with The .NET Core command-line interface (CLI). Open up your command prompt/terminal of choice and be sure to set the folder where `MessageBoard.sln` is located as the working directory.
