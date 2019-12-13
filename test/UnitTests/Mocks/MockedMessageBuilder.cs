@@ -1,5 +1,6 @@
 ﻿using MessageBoard.Domain.AggregateModels.MessageAggregate;
 using Moq;
+using System;
 
 namespace UnitTests.Mocks
 {
@@ -37,7 +38,7 @@ namespace UnitTests.Mocks
 
         public Mock<BoardMessage> Build()
         {
-            var messageMock = new Mock<BoardMessage>(_content, _clientId);
+            var messageMock = new Mock<BoardMessage>(_content, _clientId, DateTimeOffset.UtcNow);
             messageMock.Setup(x => x.Id).Returns(_messageId);
 
             return messageMock;

@@ -39,6 +39,11 @@ namespace MessageBoard.Application.SeedWork.Results
         {
             return new Result(false, true, message, new TResultStatusCode());
         }
+
+        public static Result Fail<TResultStatusCode>() where TResultStatusCode : IFailedStatusCode, new()
+        {
+            return new Result(false, true, null, new TResultStatusCode());
+        }
     }
 
     public sealed class Result<TValue> : Result

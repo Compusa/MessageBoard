@@ -22,12 +22,12 @@ namespace MessageBoard.Application.Messages.Commands
 
             if (message == null)
             {
-                return Result.Fail<NotFound>($"Message with id '{request.MessageId}' not found.");
+                return Result.Fail<NotFound>();
             }
 
             if (message.ClientId != request.ClientId)
             {
-                return Result.Fail<Forbidden>("The message can only be deleted by the client that created it.");
+                return Result.Fail<BadRequest>("The message can only be deleted by the client that created it.");
             }
 
             message.UpdateContent(request.Message);

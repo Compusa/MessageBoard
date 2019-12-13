@@ -54,8 +54,7 @@ namespace MessageBoard.Api
                     options.IncludeXmlComments(xmlPath);
 
                     options.CustomSchemaIds((type) => type.Name.Replace("Dto", string.Empty).Replace("Command", string.Empty));
-                })
-                .AddProblemDetails();
+                });
 
             services
                 .AddDbContext<MessageBoardContext>(options =>
@@ -81,8 +80,6 @@ namespace MessageBoard.Api
             app.UseRouting();
 
             app.UseAuthorization();
-
-            app.UseProblemDetails();
 
             app.UseEndpoints(endpoints =>
             {

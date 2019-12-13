@@ -5,6 +5,10 @@ namespace MessageBoard.Application.Messages.Commands
 {
     public class UpdateMessageCommand : IRequest<Result>
     {
+        public UpdateMessageCommand()
+        {
+        }
+
         public UpdateMessageCommand(int messageId, string message, int clientId)
         {
             MessageId = messageId;
@@ -12,10 +16,10 @@ namespace MessageBoard.Application.Messages.Commands
             ClientId = clientId;
         }
 
-        public int MessageId { get; }
+        internal int MessageId { get; set; }
 
-        public string Message { get; }
+        public string Message { get; set; }
 
-        public int ClientId { get; }
+        public int ClientId { get; set; }
     }
 }

@@ -41,7 +41,7 @@ namespace UnitTests.Application
         }
 
         [Fact]
-        public async Task Should_fail_with_status_forbidden_when_attempting_to_delete_message_created_by_another_client()
+        public async Task Should_fail_with_status_bad_request_when_attempting_to_delete_message_created_by_another_client()
         {
             // Arrange
             var message = MockedMessageBuilder
@@ -61,7 +61,7 @@ namespace UnitTests.Application
 
             // Assert
             Assert.True(result.Failed);
-            Assert.IsType<Forbidden>(result.StatusCode);
+            Assert.IsType<BadRequest>(result.StatusCode);
 
             _mockedRepository.Verify(x => x.GetAsync(command.MessageId), Times.Once);
         }
