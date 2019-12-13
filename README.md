@@ -37,11 +37,6 @@ dotnet test MessageBoard.sln
 ```
 dotnet run --project .\src\MessageBoard.Api
 ```
-
-#### Endpoints
-The MessageBoard API service will be up and running when the command has completed, and the endpoints will be available at:
-https://localhost:5001/api/v1/messages
-
-#### Documentation with Swagger
-The Message Board API is documented with Swagger and you can explore and test the API at:
-https://localhost:5001/swagger
+The MessageBoard API service will be up and running when the `dotnet run` command has completed. 
+The endpoints will be available at: https://localhost:5001/api/v1/messages
+The swagger documentation will be available at: https://localhost:5001/swagger
