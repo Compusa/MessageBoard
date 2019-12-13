@@ -16,6 +16,6 @@ There is still much left to do, improve or consider such as:
 * Logging and error handling
 * Richer and more robust DDD implementation
 
-## Prerequisite
+## Prerequisites
 .NET Core 3.1
 https://dotnet.microsoft.com/download/dotnet-core/3.1
