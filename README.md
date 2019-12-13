@@ -17,7 +17,9 @@ There is still much left to do, improve or consider such as:
 * Richer and more robust DDD implementation
 
 ## Prerequisites
-.NET Core 3.1o
+.NET Core 3.0 or later must be installed on the machin to be able to build, test and run this solution.
+
+Download .NET Core 3.0 here:
 https://dotnet.microsoft.com/download/dotnet-core/3.0
 
 ## Instructions for building, testing and running the solution
