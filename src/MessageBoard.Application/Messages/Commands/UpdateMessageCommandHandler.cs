@@ -30,6 +30,11 @@ namespace MessageBoard.Application.Messages.Commands
                 return Result.Fail<BadRequest>("The message can only be deleted by the client that created it.");
             }
 
+            if (string.IsNullOrWhiteSpace(request.Message))
+            {
+                return Result.Fail<BadRequest, MessageDto>("Message is required.");
+            }
+
             message.UpdateContent(request.Message);
             _messageRepository.Update(message);
 
