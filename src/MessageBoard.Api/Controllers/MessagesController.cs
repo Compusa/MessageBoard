@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MessageBoard.Api.Controllers
 {
+    /// <summary>
+    /// Message endpoints.
+    /// </summary>
     [Route("api/v1/messages")]
     [ApiController]
     public class MessagesController : MessageBoardControllerBase
