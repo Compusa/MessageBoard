@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MessageBoard.Api.Controllers
 {
     /// <summary>
-    /// Message endpoints...
+    /// Message endpoints.
     /// </summary>
     [Route("api/v1/messages")]
     [ApiController]
