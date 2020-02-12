@@ -32,9 +32,15 @@ namespace MessageBoard.Api.Controllers
         {
             return result.StatusCode switch
             {
-                StatusCodes.BadRequest _ => string.IsNullOrWhiteSpace(result.Message) ? ValidationProblem() : ValidationProblem(result.Message),
-                StatusCodes.Forbidden _ => string.IsNullOrWhiteSpace(result.Message) ? Forbid() : Forbid(result.Message),
-                StatusCodes.NotFound _ => string.IsNullOrWhiteSpace(result.Message) ? (ActionResult)NotFound() : NotFound(result.Message),
+                StatusCodes.BadRequest _ => string.IsNullOrWhiteSpace(result.Message) 
+                    ? ValidationProblem() 
+                    : ValidationProblem(result.Message),
+                StatusCodes.Forbidden _ => string.IsNullOrWhiteSpace(result.Message) 
+                    ? Forbid() 
+                    : Forbid(result.Message),
+                StatusCodes.NotFound _ => string.IsNullOrWhiteSpace(result.Message) 
+                    ? (ActionResult)NotFound() 
+                    : NotFound(result.Message),
                 _ => throw new InvalidOperationException(),
             };
         }
