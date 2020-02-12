@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MessageBoard.Infrastructure
 {
+    /// <summary>
+    /// Message board DbContext.
+    /// </summary>
     public class MessageBoardContext : DbContext, IUnitOfWork
     {
         public MessageBoardContext(DbContextOptions<MessageBoardContext> options)
