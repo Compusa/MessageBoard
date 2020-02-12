@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MessageBoard.Api.Controllers
 {
-
+    /// <summary>
+    /// Base controller implementation. 
+    /// </summary>
     public abstract class MessageBoardControllerBase : Controller
     {
         protected ActionResult<T> FromResult<T>(Result<T> result)
