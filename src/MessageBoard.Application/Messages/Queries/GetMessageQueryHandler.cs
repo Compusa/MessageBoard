@@ -19,12 +19,7 @@ namespace MessageBoard.Application.Messages.Queries
         {
             var message = await _messageBoardContext.FindAsync<BoardMessage>(request.Id);
 
-            if (message == null)
-            {
-                return null;
-            }
-
-            return MessageDto.Create(message);
+            return message == null ? null : MessageDto.Create(message);
         }
     }
 }
