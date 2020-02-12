@@ -54,3 +54,4 @@ This is the very first draft of the message board, and it was created on my spar
 * Logging and error handling
 * Richer and more robust DDD implementation
 * Code documentation
+* TBD
