@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace MessageBoard.Infrastructure
 {
+    /// <summary>
+    /// Implementation of the IReadOnlyMessageBoardContext interface.
+    /// </summary>
     public class ReadOnlyMessageBoardContext : IReadOnlyMessageBoardContext, IDisposable
     {
         private bool _disposed;
