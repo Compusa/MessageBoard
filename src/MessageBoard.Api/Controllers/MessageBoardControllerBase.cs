@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MessageBoard.Api.Controllers
 {
     /// <summary>
-    /// Base controller implementation. 
+    /// Base controller implementation, with common helper methods. 
     /// </summary>
     public abstract class MessageBoardControllerBase : Controller
     {
