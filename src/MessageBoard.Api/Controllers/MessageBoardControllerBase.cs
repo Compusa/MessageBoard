@@ -25,12 +25,7 @@ namespace MessageBoard.Api.Controllers
 
         protected IActionResult FromResult(Result result)
         {
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-
-            return FromFailedResult(result);
+            return result.Succeeded ? Ok() : FromFailedResult(result);
         }
 
         private ActionResult FromFailedResult(Result result)
