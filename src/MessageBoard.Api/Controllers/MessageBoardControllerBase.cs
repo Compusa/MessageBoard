@@ -25,21 +25,22 @@ namespace MessageBoard.Api.Controllers
 
         protected IActionResult FromResult(Result result)
         {
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-
-            return FromFailedResult(result);
+            return result.Succeeded ? Ok() : FromFailedResult(result);
         }
 
         private ActionResult FromFailedResult(Result result)
         {
             return result.StatusCode switch
             {
-                StatusCodes.BadRequest _ => string.IsNullOrWhiteSpace(result.Message) ? ValidationProblem() : ValidationProblem(result.Message),
-                StatusCodes.Forbidden _ => string.IsNullOrWhiteSpace(result.Message) ? Forbid() : Forbid(result.Message),
-                StatusCodes.NotFound _ => string.IsNullOrWhiteSpace(result.Message) ? (ActionResult)NotFound() : NotFound(result.Message),
+                StatusCodes.BadRequest _ => string.IsNullOrWhiteSpace(result.Message) 
+                    ? ValidationProblem() 
+                    : ValidationProblem(result.Message),
+                StatusCodes.Forbidden _ => string.IsNullOrWhiteSpace(result.Message) 
+                    ? Forbid() 
+                    : Forbid(result.Message),
+                StatusCodes.NotFound _ => string.IsNullOrWhiteSpace(result.Message) 
+                    ? (ActionResult)NotFound() 
+                    : NotFound(result.Message),
                 _ => throw new InvalidOperationException(),
             };
         }
