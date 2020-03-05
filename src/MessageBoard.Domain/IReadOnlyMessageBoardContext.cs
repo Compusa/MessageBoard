@@ -7,6 +7,9 @@ namespace MessageBoard.Domain
 
     public interface IReadOnlyMessageBoardContext
     {
+        /// <summary>
+        /// Gets an IQueryable of Messages.
+        /// </summary>
         IQueryable<BoardMessage> Messages { get; }
 
         /// <summary>

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace MessageBoard.Infrastructure
 {
+    /// <summary>
+    /// Implementation of the IReadOnlyMessageBoardContext interface.
+    /// </summary>
     public class ReadOnlyMessageBoardContext : IReadOnlyMessageBoardContext, IDisposable
     {
         private bool _disposed;
@@ -18,6 +21,9 @@ namespace MessageBoard.Infrastructure
             _context = context;
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public IQueryable<BoardMessage> Messages => _context.Messages.AsNoTracking();
 
         public ValueTask<TEntity> FindAsync<TEntity>(params object[] keyValues) where TEntity : class
