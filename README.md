@@ -5,7 +5,7 @@
 RESTful API to serve as the backend for a public message board.
 
 ## Instructions for building, testing and running the solution
-You can build, test and run the solution with The .NET Core command-line interface (CLI). 
+You can build, test and run the solution with the .NET Core command-line interface (CLI). 
 
 .NET Core 3.0 or later must be installed on the machine to be able to build, test and run this solution.
 
